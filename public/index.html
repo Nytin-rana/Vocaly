@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocaly — Ready To Say!</title>
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-stage">
+    <div class="bg-gradient"></div>
+    
+    <div class="bg-scrim"></div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="logo" aria-label="Vocaly">
+      <img src="assets/logo.png" alt="Vocaly Logo" width="128" height="72">
+    </div>
+    <div class="credits-pill" title="Free generations remaining today">
+      <span class="dot"></span>
+      <span id="credits-count">12</span> credits left
+    </div>
+  </header>
+
+  <main class="hero">
+    <h1 class="headline">Ready To <span class="headline-accent">Say!</span></h1>
+    <p class="subline">Type it. Pick a voice. Hear it back in seconds.</p>
+
+    <form class="generator-card" id="generator-form">
+      <label class="sr-only" for="script-input">Your text</label>
+      <textarea id="script-input" class="script-input" placeholder="Write Your Text Here…" maxlength="600" required></textarea>
+
+      <div class="card-footer">
+        <span class="char-count"><span id="char-count">0</span>/600</span>
+        <div class="waveform" id="waveform" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+     <div class="controls-row">
+        <div class="select-wrap">
+          <label class="sr-only" for="voice-select">Voice</label>
+          <select id="voice-select" class="voice-select"></select>
+          <svg class="chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <button type="button" class="icon-btn" id="delete-voice-btn" aria-label="Delete Voice" title="Delete custom voice" style="display: none; align-self: center;">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 7h16M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2m-9 0 1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+
+        <!-- Moved: New Voice button is now next to the dropdown -->
+        <button type="button" class="btn btn-new-voice" id="new-voice-btn">
+          + New Voice
+        </button>
+      </div>
+
+      <!-- Moved: Generate button is now the full-width action at the bottom -->
+      <button type="submit" class="btn btn-generate" id="generate-btn">
+        <span class="btn-label">Generate</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      </div>
+    </form>
+  </main>
+
+  <section class="history" id="history-section" aria-labelledby="history-title">
+    <div class="history-head">
+      <h2 id="history-title">Previous Generations</h2>
+      <button type="button" class="clear-btn" id="clear-history-btn">Clear all</button>
+    </div>
+    <div class="history-list" id="history-list"></div>
+    <div class="empty-state" id="empty-state">
+      <svg viewBox="0 0 64 64" width="46" height="46" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="2" opacity="0.35"/>
+        <rect x="27" y="16" width="10" height="20" rx="5" fill="currentColor" opacity="0.6"/>
+        <path d="M19 30a13 13 0 0 0 26 0" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0.6"/>
+        <line x1="32" y1="43" x2="32" y2="49" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity="0.6"/>
+      </svg>
+      <p>Nothing generated yet — your voiceovers will show up here.</p>
+    </div>
+  </section>
+
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+      <h3 id="modal-title">Create A New Voice</h3>
+      <p class="modal-sub">Name your agent and pick a base voice from your browser's speech engine.</p>
+      <label class="field-label" for="new-voice-name">Voice name</label>
+      <input type="text" id="new-voice-name" class="text-field" placeholder="e.g. Agent 4 — Warm Narrator" maxlength="40">
+      <label class="field-label" for="new-voice-base">Base engine voice</label>
+      <select id="new-voice-base" class="text-field"></select>
+      <label class="field-label" for="reference-audio">Reference audio</label>
+      <input type="file" id="reference-audio" class="text-field" accept="audio/*" required>
+      <label class="field-label" for="reference-text">Reference transcript <span>(optional)</span></label>
+      <textarea id="reference-text" class="text-field reference-text" maxlength="1000" placeholder="Words spoken in the sample, if known"></textarea>
+      <button type="button" class="btn btn-generate modal-save" id="save-voice-btn">Save Voice</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
